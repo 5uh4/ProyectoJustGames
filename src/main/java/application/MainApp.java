@@ -17,7 +17,7 @@ public class MainApp extends Application {
 			// Cargo la vista
 			FXMLLoader loader = new FXMLLoader();
 
-			loader.setLocation(MainApp.class.getResource("/views/VGDLogin.fxml"));
+			loader.setLocation(MainApp.class.getResource("/views/VGDMain.fxml"));
 
 			// Cargo la ventana
 			Pane ventana = (Pane) loader.load();

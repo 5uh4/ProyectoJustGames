@@ -86,8 +86,8 @@ public class Videojuegos {
 	}
 
 	public String toJsonString() {
-		return "Videojuegos {\n\t" + "\"id\": \"" + id + "\",\n\t title: \"" + title + "\",\n\t description: \"" + description
-				+ "\",\n\t plataformas: \"" + plataformas + "\",\n\t precio: \"" + precio + "\",\n\t tiendas: \"" + tiendas
+		return "Videojuegos {\n\t" + "\"id\": \"" + id + "\",\n\t\"title\": \"" + title + "\",\n\t\"description\": \"" + description
+				+ "\",\n\t\"plataformas\\\": \"" + plataformas + "\",\n\t \"precio\": \"" + precio + "\",\n\t \"tiendas\": \"" + tiendas
 				+ "\"\n}";
 	}
 

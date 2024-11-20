@@ -1,0 +1,20 @@
+.barra-superior-login {
+	-fx-background-color: #445B37;
+	-fx-background-radius: 55 55 0 0;
+}
+
+.caja-login {
+	-fx-background-color: linear-gradient(to bottom right, #F9F353 0%, #A8BF9A 35%, #7F9772 46%, #445B37 100%);
+}
+.caja-main {
+	-fx-background-color: #6B9456;
+}
+
+.barra-superior-main {
+	-fx-background-color: linear-gradient(to right, #80C35C 4%, #445B37 100%);
+}
+
+.text-field-login {
+	-fx-border-radius: 55;
+	-fx-background-radius: 15;
+}
