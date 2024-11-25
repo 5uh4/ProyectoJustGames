@@ -3,6 +3,7 @@ package utils;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -36,7 +37,7 @@ public class FDBC {
 			InputStream serviceAccount = FDBC.class.getClassLoader().getResourceAsStream("videogame-deals.json");
 
 			if (serviceAccount == null) {
-			    throw new FileNotFoundException("No se encontró el archivo de credenciales de Firebase.");
+			    throw new FileNotFoundException("No se encontro el archivo de credenciales de Firebase.");
 			}
 
 			FirebaseOptions options = FirebaseOptions.builder()
@@ -81,7 +82,7 @@ public class FDBC {
 				Usuario usuario = document.toObject(Usuario.class);
 				return usuario;
 			} else {
-				System.out.println("No se encontró el usuario con el username: " + username);
+				System.out.println("No se encontrÃ³ el usuario con el username: " + username);
 			}
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
@@ -113,7 +114,7 @@ public class FDBC {
 
 	public static void crearVideojuego(Videojuegos videojuego) {
 	    try {
-	        DocumentReference docRef = db.collection("videojuegos").document(String.valueOf(videojuego.getId()));
+	        DocumentReference docRef = db.collection("videogames").document(String.valueOf(videojuego.getId()));
 	        ApiFuture<DocumentSnapshot> future = docRef.get();
 	        DocumentSnapshot document = future.get();
 
@@ -131,7 +132,7 @@ public class FDBC {
 
 	public static Videojuegos obtenerVideojuego(int id) {
 		try {
-			DocumentReference docRef = db.collection("videojuegos").document(String.valueOf(id));
+			DocumentReference docRef = db.collection("videogames").document(String.valueOf(id));
 			ApiFuture<DocumentSnapshot> future = docRef.get();
 			DocumentSnapshot document = future.get();
 
@@ -139,7 +140,7 @@ public class FDBC {
 				Videojuegos videojuego = document.toObject(Videojuegos.class);
 				return videojuego;
 			} else {
-				System.out.println("No se encontró el videojuego con el id: " + id);
+				System.out.println("No se encontrÃ³ el videojuego con el id: " + id);
 			}
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
@@ -149,7 +150,7 @@ public class FDBC {
 
 	public static void actualizarVideojuego(int id, Videojuegos videojuego) {
 		try {
-			DocumentReference docRef = db.collection("videojuegos").document(String.valueOf(id));
+			DocumentReference docRef = db.collection("videogames").document(String.valueOf(id));
 			ApiFuture<WriteResult> future = docRef.set(videojuego);
 
 			System.out.println("Videojuego actualizado: " + future.get().getUpdateTime());
@@ -160,7 +161,7 @@ public class FDBC {
 
 	public static void eliminarVideojuego(int id) {
 		try {
-			DocumentReference docRef = db.collection("videojuegos").document(String.valueOf(id));
+			DocumentReference docRef = db.collection("videogames").document(String.valueOf(id));
 			ApiFuture<WriteResult> future = docRef.delete();
 
 			System.out.println("Videojuego eliminado: " + future.get().getUpdateTime());
@@ -175,17 +176,14 @@ public class FDBC {
 	    // ** PRUEBAS CON VIDEOJUEGOS **
 	    System.out.println("=== Pruebas con Videojuegos ===");
 
-	    // Crear videojuego
-	    Videojuegos juego1 = new Videojuegos(101, "Zelda: Breath of the Wild", "Aventura épica", 
+	    // Crear videojuegos
+	    Videojuegos juego1 = new Videojuegos(101, "Zelda: Breath of the Wild", "Aventura épica",
 	                                         List.of("Switch"), 59.99, List.of("Amazon", "eShop"));
-	    Videojuegos juego2 = new Videojuegos(102, "Elden Ring", "Acción RPG", 
+	    Videojuegos juego2 = new Videojuegos(102, "Elden Ring", "Acción RPG",
 	                                         List.of("PC", "PS5", "Xbox"), 69.99, List.of("Steam", "Amazon"));
 
 	    crearVideojuego(juego1);
 	    crearVideojuego(juego2);
-
-	    // Intentar crear el mismo videojuego (debe mostrar error)
-	    crearVideojuego(juego1);
 
 	    // Obtener videojuego
 	    Videojuegos obtenidoJuego = obtenerVideojuego(101);
@@ -200,21 +198,15 @@ public class FDBC {
 	    // Eliminar videojuego
 	    eliminarVideojuego(101);
 
-	    // Intentar obtener el videojuego eliminado
-	    obtenerVideojuego(101);
-
 	    // ** PRUEBAS CON USUARIOS **
 	    System.out.println("\n=== Pruebas con Usuarios ===");
 
-	    // Crear usuario con videojuegos favoritos
-	    Usuario usuario1 = new Usuario("user1", "password123", List.of(juego2));
-	    Usuario usuario2 = new Usuario("user2", "securepass456", List.of(juego1, juego2));
+	    // Crear usuarios
+	    Usuario usuario1 = new Usuario("user1", "password123", new ArrayList<>(List.of(juego2)));
+	    Usuario usuario2 = new Usuario("user2", "securepass456", new ArrayList<>(List.of(juego1, juego2)));
 
 	    crearUsuario(usuario1);
 	    crearUsuario(usuario2);
-
-	    // Intentar crear el mismo usuario (debe mostrar error)
-	    crearUsuario(usuario1);
 
 	    // Obtener usuario
 	    Usuario obtenidoUsuario = obtenerUsuario("user1");
@@ -237,7 +229,12 @@ public class FDBC {
 
 	    // Intentar obtener el usuario eliminado
 	    obtenerUsuario("user1");
+	    
+//	    Borrar los usuarios de prueba
+	    eliminarUsuario("user2", obtenerUsuario("user2"));
+	    eliminarVideojuego(102);
 	}
+
 
 
 }
