@@ -1,4 +1,4 @@
-package utils;
+package utils.DB;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,8 +17,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 
-import models.Usuario;
-import models.Videojuegos;
+import models.Users;
+import models.Videogame;
 
 /**
  * Clase para conectar con la base de datos de firestore
@@ -54,7 +54,7 @@ public class FDBC {
 		}
 	}
 
-	public static void crearUsuario(Usuario usuario) {
+	public static void crearUsuario(Users usuario) {
 	    try {
 	        DocumentReference docRef = db.collection("usuarios").document(usuario.getUsername());
 	        ApiFuture<DocumentSnapshot> future = docRef.get();
@@ -72,14 +72,14 @@ public class FDBC {
 	}
 
 
-	public static Usuario obtenerUsuario(String username) {
+	public static Users obtenerUsuario(String username) {
 		try {
 			DocumentReference docRef = db.collection("usuarios").document(username);
 			ApiFuture<DocumentSnapshot> future = docRef.get();
 			DocumentSnapshot document = future.get();
 
 			if (document.exists()) {
-				Usuario usuario = document.toObject(Usuario.class);
+				Users usuario = document.toObject(Users.class);
 				return usuario;
 			} else {
 				System.out.println("No se encontrÃ³ el usuario con el username: " + username);
@@ -90,7 +90,7 @@ public class FDBC {
 		return null;
 	}
 
-	public static void actualizarUsuario(String username, Usuario usuario) {
+	public static void actualizarUsuario(String username, Users usuario) {
 		try {
 			DocumentReference docRef = db.collection("usuarios").document(username);
 			ApiFuture<WriteResult> future = docRef.set(usuario);
@@ -101,7 +101,7 @@ public class FDBC {
 		}
 	}
 
-	public static void eliminarUsuario(String username, Usuario usuario) {
+	public static void eliminarUsuario(String username, Users usuario) {
 		try {
 			DocumentReference docRef = db.collection("usuarios").document(username);
 			ApiFuture<WriteResult> future = docRef.delete();
@@ -112,7 +112,7 @@ public class FDBC {
 		}
 	}
 
-	public static void crearVideojuego(Videojuegos videojuego) {
+	public static void crearVideojuego(Videogame videojuego) {
 	    try {
 	        DocumentReference docRef = db.collection("videogames").document(String.valueOf(videojuego.getId()));
 	        ApiFuture<DocumentSnapshot> future = docRef.get();
@@ -130,14 +130,14 @@ public class FDBC {
 	}
 
 
-	public static Videojuegos obtenerVideojuego(int id) {
+	public static Videogame obtenerVideojuego(int id) {
 		try {
 			DocumentReference docRef = db.collection("videogames").document(String.valueOf(id));
 			ApiFuture<DocumentSnapshot> future = docRef.get();
 			DocumentSnapshot document = future.get();
 
 			if (document.exists()) {
-				Videojuegos videojuego = document.toObject(Videojuegos.class);
+				Videogame videojuego = document.toObject(Videogame.class);
 				return videojuego;
 			} else {
 				System.out.println("No se encontrÃ³ el videojuego con el id: " + id);
@@ -148,7 +148,7 @@ public class FDBC {
 		return null;
 	}
 
-	public static void actualizarVideojuego(int id, Videojuegos videojuego) {
+	public static void actualizarVideojuego(int id, Videogame videojuego) {
 		try {
 			DocumentReference docRef = db.collection("videogames").document(String.valueOf(id));
 			ApiFuture<WriteResult> future = docRef.set(videojuego);
@@ -177,16 +177,16 @@ public class FDBC {
 	    System.out.println("=== Pruebas con Videojuegos ===");
 
 	    // Crear videojuegos
-	    Videojuegos juego1 = new Videojuegos(101, "Zelda: Breath of the Wild", "Aventura épica",
+	    Videogame juego1 = new Videogame(101, "Zelda: Breath of the Wild", "Aventura épica",
 	                                         List.of("Switch"), 59.99, List.of("Amazon", "eShop"));
-	    Videojuegos juego2 = new Videojuegos(102, "Elden Ring", "Acción RPG",
+	    Videogame juego2 = new Videogame(102, "Elden Ring", "Acción RPG",
 	                                         List.of("PC", "PS5", "Xbox"), 69.99, List.of("Steam", "Amazon"));
 
 	    crearVideojuego(juego1);
 	    crearVideojuego(juego2);
 
 	    // Obtener videojuego
-	    Videojuegos obtenidoJuego = obtenerVideojuego(101);
+	    Videogame obtenidoJuego = obtenerVideojuego(101);
 	    if (obtenidoJuego != null) {
 	        System.out.println("Videojuego obtenido: " + obtenidoJuego);
 	    }
@@ -202,14 +202,14 @@ public class FDBC {
 	    System.out.println("\n=== Pruebas con Usuarios ===");
 
 	    // Crear usuarios
-	    Usuario usuario1 = new Usuario("user1", "password123", new ArrayList<>(List.of(juego2)));
-	    Usuario usuario2 = new Usuario("user2", "securepass456", new ArrayList<>(List.of(juego1, juego2)));
+	    Users usuario1 = new Users("user1", "password123", new ArrayList<>(List.of(juego2)));
+	    Users usuario2 = new Users("user2", "securepass456", new ArrayList<>(List.of(juego1, juego2)));
 
 	    crearUsuario(usuario1);
 	    crearUsuario(usuario2);
 
 	    // Obtener usuario
-	    Usuario obtenidoUsuario = obtenerUsuario("user1");
+	    Users obtenidoUsuario = obtenerUsuario("user1");
 	    if (obtenidoUsuario != null) {
 	        System.out.println("Usuario obtenido: " + obtenidoUsuario);
 	    }

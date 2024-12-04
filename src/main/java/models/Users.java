@@ -7,16 +7,16 @@ import java.util.List;
  * @author thesu
  *
  */
-public class Usuario {
+public class Users {
 	private String username;
 	private String password;
-	private List<Videojuegos> juegosFavoritos;
+	private List<Videogame> juegosFavoritos;
 
-	public Usuario() {
+	public Users() {
 		super();
 	}
 
-	public Usuario(String username, String password, List<Videojuegos> juegosFavoritos) {
+	public Users(String username, String password, List<Videogame> juegosFavoritos) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -39,11 +39,11 @@ public class Usuario {
 		this.password = password;
 	}
 
-	public List<Videojuegos> getJuegosFavoritos() {
+	public List<Videogame> getJuegosFavoritos() {
 		return juegosFavoritos;
 	}
 
-	public void setJuegosFavoritos(List<Videojuegos> juegosFavoritos) {
+	public void setJuegosFavoritos(List<Videogame> juegosFavoritos) {
 		this.juegosFavoritos = juegosFavoritos;
 	}
 

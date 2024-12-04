@@ -7,7 +7,7 @@ import java.util.List;
  * @author thesu
  *
  */
-public class Videojuegos {
+public class Videogame {
 
 	private int id;
 	private String title;
@@ -16,11 +16,11 @@ public class Videojuegos {
 	private double precio;
 	private List<String> tiendas;
 
-	public Videojuegos() {
+	public Videogame() {
 		super();
 	}
 
-	public Videojuegos(int id, String title, String description, List<String> plataformas, double precio,
+	public Videogame(int id, String title, String description, List<String> plataformas, double precio,
 			List<String> tiendas) {
 		super();
 		this.id = id;

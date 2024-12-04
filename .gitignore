@@ -1,2 +1,3 @@
 /target/
-/src/main/java/utils/videogame-deals.json
+/src/main/resources/videogame-deals.json
+/src/main/java/utils/StoreData/SteamAPI.java

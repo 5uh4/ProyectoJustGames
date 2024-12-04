@@ -8,7 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import models.Videojuegos;
+import models.Videogame;
 
 public class MainApp extends Application {
 	@Override
@@ -39,7 +39,7 @@ public class MainApp extends Application {
 		List<String> tiendas = new ArrayList<String>();
 		tiendas.add("Steam");
 		tiendas.add("PSN");
-		Videojuegos v = new Videojuegos(1, "Mario Bros", "Juego de plataformas", plataformas, 59.99, tiendas);
+		Videogame v = new Videogame(1, "Mario Bros", "Juego de plataformas", plataformas, 59.99, tiendas);
 		System.out.println(v.toJsonString());
 	}
 
