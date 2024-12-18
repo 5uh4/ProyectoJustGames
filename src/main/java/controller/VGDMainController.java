@@ -176,7 +176,90 @@ public class VGDMainController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+/* 
+ * PARA IMPLEMENTAR UNA FORMA VISUAL DE INDICAR QUE ESTA CARGANDO
+ * 
+ * FXML
+private void buscarVideojuego() {
+    String nombre = searchField.getText();
+    
+    // Mostrar el indicador de carga
+    progressIndicator.setVisible(true);
+    loadingLabel.setVisible(true);
 
+    // Ejecutar la búsqueda en un hilo separado para no bloquear la interfaz gráfica
+    new Thread(() -> {
+        try {
+            if (nombre == null || nombre.trim().isEmpty()) {
+                // Si el campo de búsqueda está vacío, restauramos la lista fija
+                listaJuegosActiva = new ArrayList<>(videojuegosFijos);
+            } else {
+                listaJuegosActiva = RealSteamAPI.searchGamesByName(nombre);
+            }
+
+            // Actualizar la interfaz gráfica desde el hilo principal
+            Platform.runLater(() -> {
+                if (listaJuegosActiva.isEmpty()) {
+                    Metodos.mostrarAlerta("Videojuego no encontrado", "No se encontraron Videojuegos con el nombre: " + nombre);
+                    listaJuegosActiva = new ArrayList<>(videojuegosFijos);
+                }
+
+                int pageCount = (int) Math.ceil((double) listaJuegosActiva.size() / ITEMS_PER_PAGE);
+                pagination.setPageCount(pageCount);
+                pagination.setCurrentPageIndex(0);
+                actualizarPagina(0);
+
+                // Ocultar el indicador de carga
+                progressIndicator.setVisible(false);
+                loadingLabel.setVisible(false);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Platform.runLater(() -> {
+                // Ocultar el indicador y mostrar error
+                progressIndicator.setVisible(false);
+                loadingLabel.setVisible(false);
+                Metodos.mostrarAlerta("Error", "Ocurrió un problema durante la búsqueda.");
+            });
+        }
+    }).start();
+}
+
+ * 
+ * 
+ * 
+ * @Override
+public void initialize(URL location, ResourceBundle resources) {
+    progressIndicator.setVisible(true);
+    loadingLabel.setVisible(true);
+
+    new Thread(() -> {
+        try {
+            videojuegosFijos.add(RealSteamAPI.fetchSteamGameDetails("292030")); // The Witcher
+            videojuegosFijos.add(RealSteamAPI.fetchSteamGameDetails("1245620")); // Elden Ring
+            videojuegosFijos.addAll(RealSteamAPI.searchGamesByName("Cyberpunk 2077"));
+
+            listaJuegosActiva = videojuegosFijos;
+
+            Platform.runLater(() -> {
+                int pageCount = (int) Math.ceil((double) listaJuegosActiva.size() / ITEMS_PER_PAGE);
+                pagination.setPageCount(pageCount);
+                pagination.setCurrentPageIndex(0);
+                actualizarPagina(0);
+
+                progressIndicator.setVisible(false);
+                loadingLabel.setVisible(false);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Platform.runLater(() -> {
+                progressIndicator.setVisible(false);
+                loadingLabel.setVisible(false);
+                Metodos.mostrarAlerta("Error", "No se pudieron cargar los videojuegos.");
+            });
+        }
+    }).start();
+}**/
 	/**
 	 * Realiza la busqueda de los videojuegos a traves de la API
 	 */
