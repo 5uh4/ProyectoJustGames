@@ -18,3 +18,17 @@
 	-fx-border-radius: 55;
 	-fx-background-radius: 15;
 }
+
+.list-view {
+    -fx-background-color: transparent;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 5;
+    -fx-border-color: transparent;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.1); /* Un pequeño hover opcional */
+}

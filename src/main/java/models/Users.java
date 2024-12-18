@@ -10,13 +10,13 @@ import java.util.List;
 public class Users {
 	private String username;
 	private String password;
-	private List<Videogame> juegosFavoritos;
+	private List<Integer> juegosFavoritos;
 
 	public Users() {
 		super();
 	}
 
-	public Users(String username, String password, List<Videogame> juegosFavoritos) {
+	public Users(String username, String password, List<Integer> juegosFavoritos) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -39,17 +39,18 @@ public class Users {
 		this.password = password;
 	}
 
-	public List<Videogame> getJuegosFavoritos() {
+	public List<Integer> getJuegosFavoritos() {
 		return juegosFavoritos;
 	}
 
-	public void setJuegosFavoritos(List<Videogame> juegosFavoritos) {
+	public void setJuegosFavoritos(List<Integer> juegosFavoritos) {
 		this.juegosFavoritos = juegosFavoritos;
 	}
 
 	@Override
 	public String toString() {
-		return "Usuario [username=" + username + ", password=" + password + ", juegosFavoritos=" + juegosFavoritos
-				+ "]";
+		return "Users [username=" + username + ", password=" + password + ", juegosFavoritos=" + juegosFavoritos + "]";
 	}
+
+	
 }

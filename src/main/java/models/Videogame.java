@@ -1,34 +1,23 @@
 package models;
 
-import java.util.List;
-
-/**
- * Rough model for storage under the Firestore DB
- * @author thesu
- *
- */
 public class Videogame {
 
 	private int id;
 	private String title;
 	private String description;
-	private List<String> plataformas;
 	private double precio;
-	private List<String> tiendas;
+	private String image;
 
 	public Videogame() {
-		super();
 	}
 
-	public Videogame(int id, String title, String description, List<String> plataformas, double precio,
-			List<String> tiendas) {
+	public Videogame(int id, String title, String description, double precio, String image) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.description = description;
-		this.plataformas = plataformas;
 		this.precio = precio;
-		this.tiendas = tiendas;
+		this.image = image;
 	}
 
 	public int getId() {
@@ -55,14 +44,6 @@ public class Videogame {
 		this.description = description;
 	}
 
-	public List<String> getPlataformas() {
-		return plataformas;
-	}
-
-	public void setPlataformas(List<String> plataformas) {
-		this.plataformas = plataformas;
-	}
-
 	public double getPrecio() {
 		return precio;
 	}
@@ -71,24 +52,18 @@ public class Videogame {
 		this.precio = precio;
 	}
 
-	public List<String> getTiendas() {
-		return tiendas;
+	public String getImage() {
+		return image;
 	}
 
-	public void setTiendas(List<String> tiendas) {
-		this.tiendas = tiendas;
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	@Override
 	public String toString() {
-		return "Videojuegos [id=" + id + ", title=" + title + ", description=" + description + ", plataformas="
-				+ plataformas + ", precio=" + precio + ", tiendas=" + tiendas + "]";
-	}
-
-	public String toJsonString() {
-		return "Videojuegos {\n\t" + "\"id\": \"" + id + "\",\n\t\"title\": \"" + title + "\",\n\t\"description\": \"" + description
-				+ "\",\n\t\"plataformas\\\": \"" + plataformas + "\",\n\t \"precio\": \"" + precio + "\",\n\t \"tiendas\": \"" + tiendas
-				+ "\"\n}";
+		return "Videogame [id=" + id + ", title=" + title + ", description=" + description + ", precio=" + precio
+				+ ", image=" + image + "]";
 	}
 
 }

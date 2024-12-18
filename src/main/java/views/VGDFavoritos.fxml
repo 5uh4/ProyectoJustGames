@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="caja-login" stylesheets="@VGDStyles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19">
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1080.0" styleClass="caja-main" stylesheets="@VGDStyles.css">
+         <children>
+            <ImageView fitHeight="140.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/JustGamesFaviconNoBG.png" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" prefHeight="95.0" prefWidth="454.0" text="Just Games">
+               <font>
+                  <Font name="David Libre Regular" size="29.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="50.0" right="50.0" />
+               </HBox.margin>
+            </Label>
+            <Button fx:id="btnCerrarSesion" mnemonicParsing="false" onAction="#cerrarSesion" style="-fx-background-color: black;" text="Cerrar Sesion" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="375.0" layoutY="193.0" prefHeight="68.0" prefWidth="362.0">
+         <children>
+            <TextField promptText="Nombre Juego">
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+            </TextField>
+            <Button fx:id="buscadorBtn" mnemonicParsing="false" onAction="#buscarFavoritos" style="-fx-background-color: black;" text="Buscar" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <VBox layoutX="141.0" layoutY="281.0" prefHeight="405.0" prefWidth="786.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="29.0" prefWidth="797.0" style="-fx-background-color: black;" text="Tus Favoritos" textFill="WHITE">
+               <font>
+                  <Font name="David Libre Regular" size="28.0" />
+               </font>
+            </Label>
+            <ListView prefHeight="316.0" prefWidth="786.0" />
+            <Pagination prefHeight="61.0" prefWidth="786.0" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

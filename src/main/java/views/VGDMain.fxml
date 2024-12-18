@@ -1,46 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.Icon?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="caja-login" stylesheets="@VGDStyles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="caja-login" stylesheets="@VGDStyles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VGDMainController">
    <children>
-      <HBox alignment="CENTER" layoutX="-1.0" layoutY="-1.0" prefHeight="108.0" prefWidth="1080.0" styleClass="barra-superior-main" stylesheets="@VGDStyles.css">
+      <HBox alignment="CENTER" layoutX="-1.0" layoutY="-1.0" prefHeight="108.0" prefWidth="1080.0" styleClass="barra-superior-main" stylesheets="@VGDStyles.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Icon content="HELP_OUTLINE" prefHeight="108.0" prefWidth="121.0" />
-            <Label alignment="CENTER" prefHeight="103.0" prefWidth="835.0" text="VideoGame Deals" textAlignment="CENTER">
+            <ImageView fitHeight="115.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/Just%20Games%20Logo%20No%20Bg.png" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" prefHeight="60.0" prefWidth="765.0" text="Just Games" textAlignment="CENTER">
                <font>
                   <Font name="David Libre Regular" size="29.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="108.0" text="Log Out" />
+            <Button fx:id="btnLoggear" mnemonicParsing="false" onAction="#doLogin" prefHeight="30.0" prefWidth="108.0" style="-fx-background-color: black;" text="Login/Logout" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font></Button>
          </children>
       </HBox>
-      <VBox layoutX="102.0" layoutY="228.0" prefHeight="400.0" prefWidth="896.0" stylesheets="@VGDStyles.css">
+      <VBox layoutX="102.0" layoutY="228.0" prefHeight="405.0" prefWidth="897.0" stylesheets="@VGDStyles.css" AnchorPane.bottomAnchor="87.0" AnchorPane.leftAnchor="102.0" AnchorPane.rightAnchor="78.0">
          <children>
             <Label alignment="CENTER" prefHeight="29.0" prefWidth="905.0" style="-fx-background-color: black;" text="POPULAR GAMES" textFill="WHITE">
                <font>
                   <Font name="David Libre Regular" size="28.0" />
                </font>
             </Label>
-            <ListView prefHeight="335.0" prefWidth="876.0" styleClass="caja-main" stylesheets="@VGDStyles.css" />
-            <Pagination prefHeight="56.0" prefWidth="876.0" />
+            <ListView fx:id="listaVideojuegosFX" orientation="horizontal" prefHeight="335.0" prefWidth="876.0" styleClass="caja-main" stylesheets="@VGDStyles.css" />
+            <Pagination fx:id="pagination" prefHeight="59.0" prefWidth="896.0" />
          </children>
       </VBox>
-      <HBox alignment="CENTER" layoutX="322.0" layoutY="123.0" prefHeight="69.0" prefWidth="475.0">
+      <HBox alignment="CENTER" layoutX="366.0" layoutY="134.0" prefHeight="69.0" prefWidth="369.0" AnchorPane.leftAnchor="366.0" AnchorPane.rightAnchor="345.0">
          <children>
-            <Button mnemonicParsing="false" text="Opciones" />
-            <TextField prefHeight="26.0" prefWidth="234.0" text="Buscar..." />
-            <Button mnemonicParsing="false" text="Buscar" />
+            <TextField fx:id="searchField" prefHeight="26.0" prefWidth="234.0" promptText="Buscar...">
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin></TextField>
+            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#buscarVideojuego" style="-fx-background-color: black;" text="Buscar" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font></Button>
          </children>
       </HBox>
-   </children>
+      <Button fx:id="btnFavoritos" layoutX="511.0" layoutY="666.0" mnemonicParsing="false" onAction="#mostrarFavoritos" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: black;" text="Favoritos" textFill="WHITE" AnchorPane.leftAnchor="511.0" AnchorPane.rightAnchor="489.0">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      </children>
 </AnchorPane>

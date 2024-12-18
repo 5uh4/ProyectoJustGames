@@ -23,22 +23,22 @@ public class Metodos {
 	}
 
 	/**
-	 * Metodo que permite cambiar de pantalla. Se mantiene aquí para reducir la
-	 * cantidad de líneas de código en otras pantallas
+	 * Metodo que permite cambiar de pantalla. Se mantiene aquï¿½ para reducir la
+	 * cantidad de loneas de codigo en otras pantallas
 	 * 
 	 * @param currentStage Pantalla actual, necesario para que se cierre
 	 * @param fxmlPath     Localizacion del archivo FXML para poder abrirlo
 	 * @param title        Titulo que queramos ponerle a la pantalla
 	 * @param iconPath     Localizacion de la imagen de icono
 	 */
-	public static void cambiarPantalla(Stage currentStage, String fxmlPath, String title, String iconPath) {
+	public static void cambiarPantalla(Stage currentStage, String fxmlPath) {
 		try {
 			FXMLLoader loader = new FXMLLoader(Metodos.class.getResource(fxmlPath));
 			Parent root = loader.load();
 			Stage newStage = new Stage();
 			newStage.setScene(new Scene(root));
-			newStage.setTitle(title);
-			newStage.getIcons().add(new Image(iconPath));
+			newStage.setTitle("Just Games");
+			newStage.getIcons().add(new Image("file:src/main/resources/JustGamesFaviconNoBG.png"));
 
 			newStage.show();
 			currentStage.close();
@@ -46,6 +46,32 @@ public class Metodos {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Metodo que permite cambiar de pantalla. Se mantiene aquï¿½ para reducir la
+	 * cantidad de loneas de codigo en otras pantallas
+	 * 
+	 * @param currentStage Pantalla actual, necesario para que se cierre
+	 * @param fxmlPath     Localizacion del archivo FXML para poder abrirlo
+	 * @param title        Titulo que queramos ponerle a la pantalla
+	 * @param iconPath     Localizacion de la imagen de icono
+	 */
+	public static void mostrarLogin(Stage currentStage, String fxmlPath, String title, String iconPath) {
+		try {
+			FXMLLoader loader = new FXMLLoader(Metodos.class.getResource(fxmlPath));
+			Parent root = loader.load();
+			Stage newStage = new Stage();
+			newStage.setScene(new Scene(root));
+			newStage.setTitle(title);
+			newStage.getIcons().add(new Image("file:src/main/resources/JustGamesFaviconNoBG.png"));
+			
+			newStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 
 	/**
 	 * Metodo de cierre de sesion, se encuentra aqui puesto que se reutiliza tres
@@ -53,8 +79,8 @@ public class Metodos {
 	 */
 	public static void cierreDeSesion(ActionEvent event) {
 		Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-		Metodos.cambiarPantalla(stage, "/views/RnMLogin.fxml", "Rick & Morty Login",
-				"file:src/resources/small rick.png");
-//		Listas.userLogged = null;
+		Listas.userLogged = null;
+		Metodos.cambiarPantalla(stage, "/views/VGDMain.fxml");
+		Metodos.mostrarAlerta("SesiÃ³n cerrada", "La sesion se ha cerrado satisfactoriamente");
 	}
 }

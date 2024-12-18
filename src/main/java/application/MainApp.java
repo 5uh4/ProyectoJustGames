@@ -1,14 +1,11 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import models.Videogame;
 
 public class MainApp extends Application {
 	@Override
@@ -25,6 +22,8 @@ public class MainApp extends Application {
 			Scene scene = new Scene(ventana);
 			// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
+			primaryStage.setTitle("Just Games");
+			primaryStage.getIcons().add(new Image("file:src/resources/Just Games Favicon No Bg.png"));
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -33,14 +32,7 @@ public class MainApp extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
-		List<String> plataformas = new ArrayList<String>();
-		plataformas.add("PlayStation 5");
-		plataformas.add("PC");
-		List<String> tiendas = new ArrayList<String>();
-		tiendas.add("Steam");
-		tiendas.add("PSN");
-		Videogame v = new Videogame(1, "Mario Bros", "Juego de plataformas", plataformas, 59.99, tiendas);
-		System.out.println(v.toJsonString());
+		
 	}
 
 }
