@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="caja-login" stylesheets="@VGDStyles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="caja-login" stylesheets="@VGDStyles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VGDFavoritosController">
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1080.0" styleClass="caja-main" stylesheets="@VGDStyles.css">
          <children>
@@ -36,11 +35,19 @@
                   <Font size="16.0" />
                </font>
             </Button>
+            <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#mainScreen" prefHeight="37.0" prefWidth="153.0" style="-fx-background-color: black;" text="Pantalla Principal" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="50.0" />
+               </HBox.margin>
+            </Button>
          </children>
       </HBox>
       <HBox alignment="CENTER" layoutX="375.0" layoutY="193.0" prefHeight="68.0" prefWidth="362.0">
          <children>
-            <TextField promptText="Nombre Juego">
+            <TextField fx:id="searchField" promptText="Nombre Juego">
                <HBox.margin>
                   <Insets right="50.0" />
                </HBox.margin>
@@ -59,7 +66,7 @@
                   <Font name="David Libre Regular" size="28.0" />
                </font>
             </Label>
-            <ListView prefHeight="316.0" prefWidth="786.0" />
+            <ListView fx:id="listaFavoritos" prefHeight="316.0" prefWidth="786.0" />
             <Pagination prefHeight="61.0" prefWidth="786.0" />
          </children>
       </VBox>

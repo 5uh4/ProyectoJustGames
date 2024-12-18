@@ -44,9 +44,8 @@ public class VGDLoginController {
             Listas.userLogged = usuario; // Guardar el usuario logueado
             Metodos.mostrarAlerta("Éxito", "Inicio de sesión exitoso.");
             
-            // Cerrar solo la ventana de login
             Stage stage = (Stage) loginBtn.getScene().getWindow();
-            stage.close();
+            Metodos.cambiarPantalla(stage, "/views/VGDMain.fxml");
         } else {
             Metodos.mostrarAlerta("Error", "Credenciales incorrectas.");
         }

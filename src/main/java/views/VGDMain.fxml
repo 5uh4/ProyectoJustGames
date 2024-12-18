@@ -13,13 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="caja-login" stylesheets="@VGDStyles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VGDMainController">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="caja-login" stylesheets="@VGDStyles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VGDMainController">
    <children>
       <HBox alignment="CENTER" layoutX="-1.0" layoutY="-1.0" prefHeight="108.0" prefWidth="1080.0" styleClass="barra-superior-main" stylesheets="@VGDStyles.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fitHeight="115.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../resources/Just%20Games%20Logo%20No%20Bg.png" />
+                  <Image url="@../resources/Just%20Games%20Logo%20No%20Bg.png" />
                </image>
             </ImageView>
             <Label alignment="CENTER" prefHeight="60.0" prefWidth="765.0" text="Just Games" textAlignment="CENTER">
@@ -27,7 +27,7 @@
                   <Font name="David Libre Regular" size="29.0" />
                </font>
             </Label>
-            <Button fx:id="btnLoggear" mnemonicParsing="false" onAction="#doLogin" prefHeight="30.0" prefWidth="108.0" style="-fx-background-color: black;" text="Login/Logout" textFill="WHITE">
+            <Button fx:id="btnLoggear" mnemonicParsing="false" onAction="#doLogin" prefHeight="30.0" prefWidth="129.0" style="-fx-background-color: black;" text="Login/Logout" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font></Button>
@@ -60,5 +60,6 @@
          <font>
             <Font size="16.0" />
          </font></Button>
+      <Label fx:id="loadingLabel" alignment="CENTER" layoutX="497.0" layoutY="203.0" prefHeight="18.0" prefWidth="111.0" text="Cargando..." AnchorPane.leftAnchor="497.0" AnchorPane.rightAnchor="472.0" />
       </children>
 </AnchorPane>

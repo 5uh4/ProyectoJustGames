@@ -22,6 +22,9 @@ public class VGDRegisterController {
 	private Button cancelBtn;
 
 	@FXML
+	private Button loginBtn;
+	
+	@FXML
 	private TextField emailTF;
 
 	@FXML
@@ -38,6 +41,7 @@ public class VGDRegisterController {
 		Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
 		Metodos.cambiarPantalla(stage, "/views/VGDLogin.fxml");
 	}
+
 	@FXML
 	private void register(ActionEvent event) {
 		String email = emailTF.getText().trim();
@@ -54,17 +58,19 @@ public class VGDRegisterController {
 		if (usuarioExistente != null) {
 			Metodos.mostrarAlerta("Error", "El usuario ya existe. Elige otro nombre de usuario.");
 			return;
+		} else {
+			// Crear un nuevo usuario
+			Users nuevoUsuario = new Users();
+			nuevoUsuario.setUsername(email);
+			nuevoUsuario.setPassword(password);
+			nuevoUsuario.setJuegosFavoritos(new ArrayList<>()); // Inicializa la lista vacía
+
+			FDBC.crearUsuario(nuevoUsuario);
+			Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+			Metodos.mostrarAlerta("Usuario creado", "Usuario creado correctamente");
+			Metodos.cambiarPantalla(stage, "/views/VGDMain.fxml");
+			Listas.userLogged = nuevoUsuario;
 		}
 
-		// Crear un nuevo usuario
-		Users nuevoUsuario = new Users();
-		nuevoUsuario.setUsername(email);
-		nuevoUsuario.setPassword(password);
-		nuevoUsuario.setJuegosFavoritos(new ArrayList<>()); // Inicializa la lista vacía
-
-		FDBC.crearUsuario(nuevoUsuario);
-		Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-		Metodos.cambiarPantalla(stage, "/views/VGDMain.fxml");
-		Listas.userLogged = nuevoUsuario;
 	}
 }

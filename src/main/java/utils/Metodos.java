@@ -1,11 +1,14 @@
 package utils;
 
+import java.util.function.Consumer;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Metodos {
@@ -28,8 +31,6 @@ public class Metodos {
 	 * 
 	 * @param currentStage Pantalla actual, necesario para que se cierre
 	 * @param fxmlPath     Localizacion del archivo FXML para poder abrirlo
-	 * @param title        Titulo que queramos ponerle a la pantalla
-	 * @param iconPath     Localizacion de la imagen de icono
 	 */
 	public static void cambiarPantalla(Stage currentStage, String fxmlPath) {
 		try {
@@ -38,7 +39,7 @@ public class Metodos {
 			Stage newStage = new Stage();
 			newStage.setScene(new Scene(root));
 			newStage.setTitle("Just Games");
-			newStage.getIcons().add(new Image("file:src/main/resources/JustGamesFaviconNoBG.png"));
+			newStage.getIcons().add(new Image("file:src/main/java/resources/JustGamesFaviconNoBG.png"));
 
 			newStage.show();
 			currentStage.close();
@@ -56,14 +57,14 @@ public class Metodos {
 	 * @param title        Titulo que queramos ponerle a la pantalla
 	 * @param iconPath     Localizacion de la imagen de icono
 	 */
-	public static void mostrarLogin(Stage currentStage, String fxmlPath, String title, String iconPath) {
+	public static void mostrarLogin(Stage currentStage, String fxmlPath) {
 		try {
 			FXMLLoader loader = new FXMLLoader(Metodos.class.getResource(fxmlPath));
 			Parent root = loader.load();
 			Stage newStage = new Stage();
 			newStage.setScene(new Scene(root));
-			newStage.setTitle(title);
-			newStage.getIcons().add(new Image("file:src/main/resources/JustGamesFaviconNoBG.png"));
+			newStage.setTitle("Just Games");
+			newStage.getIcons().add(new Image("file:src/main/java/resources/JustGamesFaviconNoBG.png"));
 			
 			newStage.show();
 		} catch (Exception e) {
@@ -71,16 +72,90 @@ public class Metodos {
 		}
 	}
 	
+	/**
+     * Metodo para mostrar una nueva pantalla sin cerrar la actual.
+     * Ideal para ventanas modales como "Detalles".
+     * @param fxmlPath Localizacion del archivo FXML para abrir la nueva pantalla
+     */
+    public static void mostrarPantallaModal(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Metodos.class.getResource(fxmlPath));
+            Parent root = loader.load();
+            Stage modalStage = new Stage();
+            modalStage.setScene(new Scene(root));
+            modalStage.setTitle("Detalles del Videojuego");
+            modalStage.getIcons().add(new Image("file:src/main/java/resources/JustGamesFaviconNoBG.png"));
+
+            // Establecer la ventana como modal
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.setResizable(false);
+
+            modalStage.showAndWait(); // Espera a que el usuario cierre esta ventana antes de continuar
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Metodo para mostrar pantallas superpuestas (sin cerrar la actual).
+     *
+     * @param fxmlPath Ruta del archivo FXML.
+     * @param onLoad Callback opcional para inicializar datos en el controlador.
+     */
+    public static void mostrarSuperpuesta(String fxmlPath, Consumer<Object> onLoad) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Metodos.class.getResource(fxmlPath));
+            Parent root = loader.load();
+
+            if (onLoad != null) {
+                Object controller = loader.getController();
+                onLoad.accept(controller);
+            }
+
+            Stage newStage = new Stage();
+            newStage.setScene(new Scene(root));
+            newStage.setTitle("Just Games");
+            newStage.getIcons().add(new Image("file:src/main/java/resources/JustGamesFaviconNoBG.png"));
+            newStage.initModality(Modality.APPLICATION_MODAL);
+            newStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo abrir la ventana solicitada.");
+        }
+    }
+
+    
+    /**
+     * Metodo para recargar la pantalla principal, como en casos de login.
+     * @param currentStage Pantalla actual
+     * @param fxmlPath Localizacion del archivo FXML para recargar la pantalla
+     */
+    public static void recargarPantalla(Stage currentStage, String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Metodos.class.getResource(fxmlPath));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+
+            // Actualiza la escena en lugar de abrir una nueva ventana
+            currentStage.setScene(scene);
+            currentStage.setTitle("Just Games");
+            currentStage.getIcons().add(new Image("file:src/main/java/resources/JustGamesFaviconNoBG.png"));
+
+            currentStage.show(); // Muestra la ventana actualizada
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 	
 
-	/**
-	 * Metodo de cierre de sesion, se encuentra aqui puesto que se reutiliza tres
-	 * veces en tres pantallas distintas
-	 */
-	public static void cierreDeSesion(ActionEvent event) {
-		Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-		Listas.userLogged = null;
-		Metodos.cambiarPantalla(stage, "/views/VGDMain.fxml");
-		Metodos.mostrarAlerta("Sesión cerrada", "La sesion se ha cerrado satisfactoriamente");
-	}
+    /**
+     * Metodo de cierre de sesion.
+     * Se asegura de recargar la pantalla principal para reflejar cambios.
+     */
+    public static void cierreDeSesion(ActionEvent event) {
+        Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        Listas.userLogged = null;
+        recargarPantalla(currentStage, "/views/VGDMain.fxml");
+        mostrarAlerta("Sesión cerrada", "La sesion se ha cerrado satisfactoriamente");
+    }
 }

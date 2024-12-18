@@ -10,18 +10,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="751.0" prefWidth="637.0" style="-fx-background-radius: 55;" styleClass="caja-login" stylesheets="@VGDStyles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VGDLoginController">
+<AnchorPane prefHeight="751.0" prefWidth="637.0" style="-fx-background-radius: 55;" styleClass="caja-login" stylesheets="@VGDStyles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VGDRegisterController">
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="637.0" styleClass="barra-superior-login" stylesheets="@VGDStyles.css">
          <children>
-            <Label alignment="CENTER" prefHeight="50.0" prefWidth="142.0" styleClass="texto-titulos" stylesheets="@VGDStyles.css" text="Login" textAlignment="CENTER">
+            <Label alignment="CENTER" prefHeight="60.0" prefWidth="280.0" styleClass="texto-titulos" stylesheets="@VGDStyles.css" text="Registro" textAlignment="CENTER">
                <font>
                   <Font name="Corbel Bold" size="51.0" />
                </font>
             </Label>
          </children>
       </HBox>
-      <Button layoutX="277.0" layoutY="691.0" mnemonicParsing="false" style="-fx-background-color: black;" text="Cancelar" textFill="WHITE">
+      <Button fx:id="cancelBtn" layoutX="277.0" layoutY="691.0" mnemonicParsing="false" onAction="#cancel" style="-fx-background-color: black;" text="Cancelar" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
@@ -36,7 +36,7 @@
                   <Font name="David Libre Regular" size="36.0" />
                </font>
             </Label>
-            <Label text="Inicia sesión o Registrate">
+            <Label text="Registrate o vuelve al inicio de sesion">
                <VBox.margin>
                   <Insets bottom="60.0" />
                </VBox.margin>
@@ -55,7 +55,7 @@
             <PasswordField fx:id="passTF" alignment="CENTER" promptText="Contraseña" styleClass="text-field-login" stylesheets="@VGDStyles.css" />
             <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="registerBtn" mnemonicParsing="false" onAction="#register" style="-fx-background-color: black;" text="Registrarse" textFill="WHITE">
+                  <Button fx:id="registerBtn" mnemonicParsing="false" onAction="#register" prefHeight="37.0" prefWidth="117.0" style="-fx-background-color: black;" text="Registrarse" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
@@ -63,7 +63,7 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#logIn" style="-fx-background-color: black;" text="Iniciar Sesión" textFill="WHITE">
+                  <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#volverLogin" prefHeight="37.0" prefWidth="134.0" style="-fx-background-color: black;" text="Volver al Login" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>

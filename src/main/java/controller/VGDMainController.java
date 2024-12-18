@@ -35,8 +35,6 @@ import utils.StoreData.RealSteamAPI;
 
 public class VGDMainController implements Initializable {
 
-	@FXML
-	private ListView<Videogame> listaJuegosUsuario;
 	
 	@FXML
 	private ListView<Videogame> listaVideojuegosFX;
@@ -52,9 +50,11 @@ public class VGDMainController implements Initializable {
 
 	@FXML
 	private Pagination pagination;
+	
+	@FXML
+	private Label loadingLabel;
 
 	private List<Videogame> videojuegosFijos = new ArrayList<>();
-	private List<Videogame> videojuegosTemporales = new ArrayList<>();
 	private List<Videogame> listaJuegosActiva = new ArrayList<>();
 
 	private static final int ITEMS_PER_PAGE = 4;
@@ -67,59 +67,74 @@ public class VGDMainController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+		loadingLabel.setVisible(false);
+		if(Listas.userLogged == null) {
+			btnLoggear.setText("Login");
+			btnFavoritos.setVisible(false);
+		} else {
+			btnLoggear.setText("Logout");
+			btnFavoritos.setVisible(true);
+		}
 		if (listaVideojuegosFX == null) {
 		    System.out.println("Error: listaVideojuegosFX no esta inicializada");
 		    return;
 		}
-		try {
-			videojuegosFijos.add(RealSteamAPI.fetchSteamGameDetails("292030")); // The Witcher
-			videojuegosFijos.add(RealSteamAPI.fetchSteamGameDetails("1245620")); // Elden Ring
-			videojuegosFijos.addAll(RealSteamAPI.searchGamesByName("Cyberpunk 2077"));
+		new Thread(() -> {
+			try {
+				Platform.runLater(() ->{
+					
+				videojuegosFijos.add(RealSteamAPI.fetchSteamGameDetails("292030")); // The Witcher
+				videojuegosFijos.add(RealSteamAPI.fetchSteamGameDetails("1245620")); // Elden Ring
+				videojuegosFijos.addAll(RealSteamAPI.searchGamesByName("Cyberpunk 2077"));
 
-			listaJuegosActiva = videojuegosFijos;
-			
-			int pageCount = (int) Math.ceil((double) listaJuegosActiva.size() / ITEMS_PER_PAGE);
-			pagination.setPageCount(pageCount);
-			pagination.setCurrentPageIndex(0);
-			actualizarPagina(0);
+				listaJuegosActiva = videojuegosFijos;
+				
+				int pageCount = (int) Math.ceil((double) listaJuegosActiva.size() / ITEMS_PER_PAGE);
+				pagination.setPageCount(pageCount);
+				pagination.setCurrentPageIndex(0);
+				actualizarPagina(0);
 
-			listaVideojuegosFX.setCellFactory(param -> new ListCell<Videogame>() {
-				@Override
-				protected void updateItem(Videogame item, boolean empty) {
-					super.updateItem(item, empty);
-					if (empty || item == null) {
-						setText(null);
-						setGraphic(null);
-						setStyle("-fx-background-color: transparent;");
-					} else {
-						VBox customRow = createCustomRow(item);
-						customRow.setPrefSize(300, 350);
-						setGraphic(customRow);
-					}
-				}
-			});
-
-			listaVideojuegosFX.setOnMouseClicked(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					if (event.getClickCount() == 2) {
-						Videogame selectedGame = listaVideojuegosFX.getSelectionModel().getSelectedItem();
-						if (selectedGame != null) {
-							abrirDetallesVideojuego(selectedGame);
+				listaVideojuegosFX.setCellFactory(param -> new ListCell<Videogame>() {
+					@Override
+					protected void updateItem(Videogame item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty || item == null) {
+							setText(null);
+							setGraphic(null);
+							setStyle("-fx-background-color: transparent;");
+						} else {
+							VBox customRow = createCustomRow(item);
+							customRow.setPrefSize(300, 400);
+							setGraphic(customRow);
 						}
 					}
-				}
-			});
+				});
 
-			pagination.setPageFactory(pageIndex -> {
-				actualizarPagina(pageIndex);
-				return new VBox(); // Solo para cumplir con el metodo, no se utiliza
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+				listaVideojuegosFX.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						if (event.getClickCount() == 2) {
+							Videogame selectedGame = listaVideojuegosFX.getSelectionModel().getSelectedItem();
+							if (selectedGame != null) {
+								abrirDetallesVideojuego(selectedGame);
+							}
+						}
+					}
+				});
 
+				pagination.setPageFactory(pageIndex -> {
+					actualizarPagina(pageIndex);
+					return new VBox(); // Solo para cumplir con el metodo, no se utiliza
+				});
+				});
+			} catch (Exception e) { Platform.runLater(() -> {
+                loadingLabel.setVisible(false);
+                e.printStackTrace();
+                Metodos.mostrarAlerta("Error", "No se pudieron cargar los videojuegos.");
+            });
+			}
+		}).start();;
+		
 	}
 
 	@FXML
@@ -142,7 +157,6 @@ public class VGDMainController implements Initializable {
 			Metodos.cambiarPantalla(stage, "/views/VGDLogin.fxml");
 		}
 	}
-
 
 	private void abrirDetallesVideojuego(Videogame videojuego) {
 		if (videojuego == null) {
@@ -176,107 +190,67 @@ public class VGDMainController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-/* 
- * PARA IMPLEMENTAR UNA FORMA VISUAL DE INDICAR QUE ESTA CARGANDO
- * 
- * FXML
-private void buscarVideojuego() {
-    String nombre = searchField.getText();
-    
-    // Mostrar el indicador de carga
-    progressIndicator.setVisible(true);
-    loadingLabel.setVisible(true);
 
-    // Ejecutar la búsqueda en un hilo separado para no bloquear la interfaz gráfica
-    new Thread(() -> {
-        try {
-            if (nombre == null || nombre.trim().isEmpty()) {
-                // Si el campo de búsqueda está vacío, restauramos la lista fija
-                listaJuegosActiva = new ArrayList<>(videojuegosFijos);
-            } else {
-                listaJuegosActiva = RealSteamAPI.searchGamesByName(nombre);
-            }
-
-            // Actualizar la interfaz gráfica desde el hilo principal
-            Platform.runLater(() -> {
-                if (listaJuegosActiva.isEmpty()) {
-                    Metodos.mostrarAlerta("Videojuego no encontrado", "No se encontraron Videojuegos con el nombre: " + nombre);
-                    listaJuegosActiva = new ArrayList<>(videojuegosFijos);
-                }
-
-                int pageCount = (int) Math.ceil((double) listaJuegosActiva.size() / ITEMS_PER_PAGE);
-                pagination.setPageCount(pageCount);
-                pagination.setCurrentPageIndex(0);
-                actualizarPagina(0);
-
-                // Ocultar el indicador de carga
-                progressIndicator.setVisible(false);
-                loadingLabel.setVisible(false);
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Platform.runLater(() -> {
-                // Ocultar el indicador y mostrar error
-                progressIndicator.setVisible(false);
-                loadingLabel.setVisible(false);
-                Metodos.mostrarAlerta("Error", "Ocurrió un problema durante la búsqueda.");
-            });
-        }
-    }).start();
-}
-
- * 
- * 
- * 
- * @Override
-public void initialize(URL location, ResourceBundle resources) {
-    progressIndicator.setVisible(true);
-    loadingLabel.setVisible(true);
-
-    new Thread(() -> {
-        try {
-            videojuegosFijos.add(RealSteamAPI.fetchSteamGameDetails("292030")); // The Witcher
-            videojuegosFijos.add(RealSteamAPI.fetchSteamGameDetails("1245620")); // Elden Ring
-            videojuegosFijos.addAll(RealSteamAPI.searchGamesByName("Cyberpunk 2077"));
-
-            listaJuegosActiva = videojuegosFijos;
-
-            Platform.runLater(() -> {
-                int pageCount = (int) Math.ceil((double) listaJuegosActiva.size() / ITEMS_PER_PAGE);
-                pagination.setPageCount(pageCount);
-                pagination.setCurrentPageIndex(0);
-                actualizarPagina(0);
-
-                progressIndicator.setVisible(false);
-                loadingLabel.setVisible(false);
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Platform.runLater(() -> {
-                progressIndicator.setVisible(false);
-                loadingLabel.setVisible(false);
-                Metodos.mostrarAlerta("Error", "No se pudieron cargar los videojuegos.");
-            });
-        }
-    }).start();
-}**/
 	/**
 	 * Realiza la busqueda de los videojuegos a traves de la API
 	 */
 	@FXML
 	private void buscarVideojuego() {
-		String nombre = searchField.getText();
-		if (nombre == null || nombre.trim().isEmpty()) {
-		       // Si el campo de búsqueda está vacío, restauramos la lista fija
-	        listaJuegosActiva = new ArrayList<>(videojuegosFijos);
-	        int pageCount = (int) Math.ceil((double) listaJuegosActiva.size() / ITEMS_PER_PAGE);
-	        pagination.setPageCount(pageCount);
-	        pagination.setCurrentPageIndex(0);
-	        actualizarPagina(0);
-		} else {
-			actualizarListaJuegos(nombre);
-		}
+	    String nombre = searchField.getText();
+	    
+	    // Mostrar el indicador de carga
+	    loadingLabel.setVisible(true);
+
+	    // Ejecutar la búsqueda en un hilo separado para no bloquear la interfaz gráfica
+	    new Thread(() -> {
+	        try {
+	            if (nombre == null || nombre.trim().isEmpty()) {
+	                // Si el campo de búsqueda está vacío, restauramos la lista fija
+	                listaJuegosActiva = new ArrayList<>(videojuegosFijos);
+	            } else {
+	                listaJuegosActiva = RealSteamAPI.searchGamesByName(nombre);
+	            }
+
+	            // Actualizar la interfaz gráfica desde el hilo principal
+	            Platform.runLater(() -> {
+	                if (listaJuegosActiva.isEmpty()) {
+	                    Metodos.mostrarAlerta("Videojuego no encontrado", "No se encontraron Videojuegos con el nombre: " + nombre);
+	                    listaJuegosActiva = new ArrayList<>(videojuegosFijos);
+	                }
+
+	                int pageCount = (int) Math.ceil((double) listaJuegosActiva.size() / ITEMS_PER_PAGE);
+	                pagination.setPageCount(pageCount);
+	                pagination.setCurrentPageIndex(0);
+	                actualizarPagina(0);
+
+	                // Ocultar el indicador de carga
+	                loadingLabel.setVisible(false);
+	            });
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            Platform.runLater(() -> {
+	                // Ocultar el indicador y mostrar error
+	                loadingLabel.setVisible(false);
+	                Metodos.mostrarAlerta("Error", "Ocurrió un problema durante la búsqueda.");
+	            });
+	        }
+	    }).start();
 	}
+	
+	//	@FXML
+//	private void buscarVideojuego() {
+//		String nombre = searchField.getText();
+//		if (nombre == null || nombre.trim().isEmpty()) {
+//		       // Si el campo de búsqueda está vacío, restauramos la lista fija
+//	        listaJuegosActiva = new ArrayList<>(videojuegosFijos);
+//	        int pageCount = (int) Math.ceil((double) listaJuegosActiva.size() / ITEMS_PER_PAGE);
+//	        pagination.setPageCount(pageCount);
+//	        pagination.setCurrentPageIndex(0);
+//	        actualizarPagina(0);
+//		} else {
+//			actualizarListaJuegos(nombre);
+//		}
+//	}
 
 	/**
 	 * Actualiza la lista de Videojuegos
@@ -284,20 +258,20 @@ public void initialize(URL location, ResourceBundle resources) {
 	 * @param nombre Nombre del Videojuego que queremos buscar
 	 */
 
-	private void actualizarListaJuegos(String nombre) {
-		listaJuegosActiva = RealSteamAPI.searchGamesByName(nombre);
-		if (listaJuegosActiva.isEmpty()) {
-			Metodos.mostrarAlerta("Videojuego no encontrado", "No se encontraron Videojuegos con el nombre: " + nombre);
-		      // Restauramos la lista fija si no hay resultados
-	        listaJuegosActiva = new ArrayList<>(videojuegosFijos);
-	        actualizarPagina(0);
-		} else {
-			int pageCount = (int) Math.ceil((double) listaJuegosActiva.size() / ITEMS_PER_PAGE);
-			pagination.setPageCount(pageCount);
-			pagination.setCurrentPageIndex(0);
-			actualizarPagina(0);
-		}
-	}
+//	private void actualizarListaJuegos(String nombre) {
+//		listaJuegosActiva = RealSteamAPI.searchGamesByName(nombre);
+//		if (listaJuegosActiva.isEmpty()) {
+//			Metodos.mostrarAlerta("Videojuego no encontrado", "No se encontraron Videojuegos con el nombre: " + nombre);
+//		      // Restauramos la lista fija si no hay resultados
+//	        listaJuegosActiva = new ArrayList<>(videojuegosFijos);
+//	        actualizarPagina(0);
+//		} else {
+//			int pageCount = (int) Math.ceil((double) listaJuegosActiva.size() / ITEMS_PER_PAGE);
+//			pagination.setPageCount(pageCount);
+//			pagination.setCurrentPageIndex(0);
+//			actualizarPagina(0);
+//		}
+//	}
 
 	/**
 	 * Actualiza la paginacion
@@ -316,7 +290,7 @@ public void initialize(URL location, ResourceBundle resources) {
 		// Configurar imagen principal
 		ImageView imageView = new ImageView(new Image(Videojuego.getImage()));
 		imageView.setFitHeight(300);
-		imageView.setFitWidth(300);
+		imageView.setFitWidth(400);
 		imageView.setPreserveRatio(true);
 		imageView.setSmooth(true);
 
@@ -332,7 +306,7 @@ public void initialize(URL location, ResourceBundle resources) {
 		Region space2 = new Region();
 		HBox.setHgrow(space2, javafx.scene.layout.Priority.ALWAYS);
 
-		// Configurar diseÃ±o de la fila
+		// Configurar diseno de la fila
 		StackPane stackPane = new StackPane(imageView);
 		customRow.getChildren().addAll(stackPane, space, pjNombreLabel, space2, estadoLabel);
 		customRow.setAlignment(javafx.geometry.Pos.CENTER);
